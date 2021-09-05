@@ -16,10 +16,11 @@ def recv_msg(c,name_c):
             c.close()
             break
 
-def create_client():
+def create_client(s_ip):
     name_c = input('Enter your name: ')
+    if s_ip == '': s_ip = input('Enter the server ip: ')
     c = socket.socket()
-    c.connect(('localhost',9999))
+    c.connect((s_ip,9999))
     c.send(name_c.encode())
     print(c.recv(1024).decode())
     t1 = Thread(target=send_msg, args=(c,name_c))

@@ -2,6 +2,7 @@ import client
 import server
 from threading import Thread
 import time
+import socket
 
 def create_server():
     try:
@@ -10,9 +11,9 @@ def create_server():
         print('Already a server is running, try joining it')
         choice()
         
-def create_client():
+def create_client(s_ip):
     try:
-        client.create_client()
+        client.create_client(s_ip)
     except Exception:
         print('There is no online server, try creating one.')
         choice()
@@ -29,9 +30,11 @@ Welcome to the chat room
         t1 = Thread(target=create_server)
         t1.start()
         time.sleep(0.2)
-        t2 = Thread(target=create_client)
+        host_name = socket.gethostname()
+        s_ip = socket.gethostbyname(host_name)
+        t2 = Thread(target=create_client,args=(s_ip,))
         t2.start()
     elif choice == 2:
-        create_client()
+        create_client('')
 
 choice()

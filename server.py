@@ -1,5 +1,6 @@
 import socket
 from threading import Thread
+from time import sleep, time
 
 def message_exchange(c, clients):
     while True:
@@ -22,7 +23,9 @@ def message_exchange(c, clients):
 
 def create_server():
     s = socket.socket()
-    s.bind(('localhost',9999))
+    host_name = socket.gethostname()
+    s_ip = socket.gethostbyname(host_name)
+    s.bind((host_name,9999))
 
     s.listen(4)
 
@@ -36,6 +39,8 @@ def create_server():
             s_name = name
             flag = 'n'
             c.send(('You created the chat room').encode())
+            c.send((f'Server IP: {s_ip}. Share with your friends to connect.').encode())
+            sleep(0.1)
             c.send(('Waiting for members').encode())
             
         else:
